@@ -1,11 +1,13 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/jinzhu/gorm"
+)
 
-//Notification struct
+// Notification struct
 type Notification struct {
 	gorm.Model
-	UserID   string
+	UserIDTo string
 	Username string
-	Message  string
+	Message  string `json:"message"`
 }

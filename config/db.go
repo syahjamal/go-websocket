@@ -6,8 +6,10 @@ import (
 	"github.com/syahjamal/go-websocket/models"
 )
 
+//DB variable
 var DB *gorm.DB
 
+// InitDB function
 func InitDB() {
 	var err error
 
