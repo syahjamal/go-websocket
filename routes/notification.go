@@ -34,22 +34,23 @@ func GetNotifID(c *gin.Context) {
 func GetMessage(c *gin.Context) {
 	createdAt := c.Param("created_at")
 
-	var item models.Notification
-	config.DB.Where("created_at > ?", createdAt).Find(&item)
+	var bc models.Notification
+	config.DB.Where("created_at > ?", createdAt).Find(&bc)
 	c.JSON(200, gin.H{
 		"status": "berhasil mendapatkan data",
-		"data":   item.Message,
+		"data":   bc.Message,
 	})
+
+	return
 }
 
 //PostNotif function
 func PostNotif(c *gin.Context) {
 	item := models.Notification{
-		UserIDTo: c.PostForm("user_id_to"),
-		Username: c.PostForm("username"),
-		Message:  c.PostForm("message"),
+		UserIDTo: c.PostForm("userid"),
+		Username: c.PostForm("nama"),
+		Message:  c.PostForm("msg"),
 	}
-
 	config.DB.Create(&item)
 	c.JSON(200, gin.H{
 		"status": "berhasil post",
