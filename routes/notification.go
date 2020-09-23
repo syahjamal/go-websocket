@@ -41,7 +41,7 @@ func GetMessage(c *gin.Context) {
 		"data":   bc.Message,
 	})
 
-	return
+	models.Broadcast <- bc
 }
 
 //PostNotif function
