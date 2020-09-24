@@ -2,7 +2,7 @@
 var socket = new WebSocket('ws://localhost:8000/ws')
 
 let connect = (cb) => {
-    console.log("connecting")
+    console.log("Connecting")
 
     socket.onopen = () => {
         console.log("Successfully Connected");

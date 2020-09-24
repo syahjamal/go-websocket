@@ -119,6 +119,7 @@
   flex-direction: row;
   padding: 10px;
   border-bottom: 4px solid #f2f6fd;
+  cursor: pointer;
 }
 
 .notif_dropdown_item > .avatar {
