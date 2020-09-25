@@ -2,30 +2,24 @@ import React, { Component } from 'react';
 import './App.css';
 import NavigationBar from './components/NavigationBar';
 import Footer from './components/Footer';
-import { connect } from './api';
 
+// Object destructuring
+// const StudentCard = ({name, age, major}) => {
+//   return (
+//     <div className="student">
+//       <p className="student-name">{name}</p>
+//       <p className="student-age">{age}</p>
+//       <p className="student-major">{major}</p>
+//     </div>
+//   )
+// }
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      notifHistory: []
-    }
-  }
-  
-  componentDidMount() {
-    connect((msg) => {
-      console.log("New Message")
-      this.setState(prevState => ({
-        notifHistory: [...prevState.notifHistory, msg]
-      }))
-    })
-  }
-
   render(){
     return (
       <div className="App">
         <NavigationBar />
+        {/* <StudentCard name="Irfan" age="24" major="International Relationship"/>       */}
         <Footer />
       </div>
     );

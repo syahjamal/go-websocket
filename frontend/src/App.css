@@ -123,7 +123,7 @@
 }
 
 .notif_dropdown_item > .avatar {
-  background-color: red;
+  background-color: #d3d3d3;
   border-radius: 50%;
   width: 50px;
   height: 40px;
