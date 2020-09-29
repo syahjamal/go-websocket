@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gin-contrib/static"
 	"github.com/syahjamal/go-websocket/config"
 	"github.com/syahjamal/go-websocket/routes"
 
@@ -27,10 +28,12 @@ func main() {
 	r := gin.Default()
 
 	r.POST("/post", routes.PostNotif)
-	r.StaticFS("/", http.Dir("./frontend/src"))
+	// r.StaticFS("/", http.Dir("./frontend/src"))
+	r.Use(static.Serve("/", static.LocalFile("./frontend/src", true)))
 
 	// Configure websocket route
-	http.HandleFunc("/ws", handleConnections)
+	// http.HandleFunc("/ws", handleConnections)
+	r.GET("/ws", handleConnections)
 	// r.GET("/getnotif", routes.GetMessage)
 
 	go handleMessages()
@@ -44,10 +47,10 @@ func main() {
 
 }
 
-func handleConnections(w http.ResponseWriter, r *http.Request) {
+func handleConnections(c *gin.Context) {
 	// Upgrade initial GET request to a websocket
 	// ws, err := upgrader.Upgrade(c.Writer, c.Request, nil)
-	ws, err := upgrader.Upgrade(w, r, nil)
+	ws, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
