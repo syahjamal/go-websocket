@@ -9,6 +9,7 @@ class NotifDropdown extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            endpoint:"ws://localhost:8000/ws",
             notifDropdownItem: []
         }
     }

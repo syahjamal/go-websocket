@@ -4,15 +4,14 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/syahjamal/go-websocket/config"
+	"github.com/syahjamal/go-websocket/routes"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"github.com/syahjamal/go-websocket/models"
-	"github.com/syahjamal/go-websocket/routes"
 )
 
-// musti gimana gw bgung ga konek mulu depan ma blkng nya//error dimana
-// Hasil ngetestnya dimana
-// koneksi depannya dimana
 var clients = make(map[*websocket.Conn]bool)
 
 var upgrader = websocket.Upgrader{
@@ -22,26 +21,26 @@ var upgrader = websocket.Upgrader{
 }
 
 func main() {
+	config.InitDB()
+	defer config.DB.Close()
+
 	r := gin.Default()
-	// Create a simple file server
-	// fs := http.FileServer(http.Dir("./frontend"))
-	// http.Handle("/", fs)
+
+	r.POST("/post", routes.PostNotif)
 	r.StaticFS("/", http.Dir("./frontend/src"))
 
 	// Configure websocket route
-	// http.HandleFunc("/ws", handleConnections)
-
 	http.HandleFunc("/ws", handleConnections)
-	// r.GET("/ws", handleConnections)
-	// r.GET("/ws", gin.Wrap(handleConnections))
+	// r.GET("/getnotif", routes.GetMessage)
 
 	go handleMessages()
 
-	log.Println("http server started on :8000")
-	err := http.ListenAndServe(":8000", nil)
-	if err != nil {
-		log.Fatal("ListenAndServe: ", err)
-	}
+	// log.Println("http server started on :8000")
+	// err := http.ListenAndServe(":8000", nil)
+	// if err != nil {
+	// 	log.Fatal("ListenAndServe: ", err)
+	// }
+	r.Run()
 
 }
 
@@ -57,10 +56,21 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 
 	// Register our new client
 	clients[ws] = true
-
 	for {
-		var ctx *gin.Context
-		routes.GetMessage(ctx)
+		// var ctx *gin.Context
+		// routes.GetMessage(ctx)
+
+		var notif models.Notification
+
+		err := ws.ReadJSON(&notif)
+		if err != nil {
+			log.Printf("error: %v", err)
+			delete(clients, ws)
+			break
+		}
+
+		models.Broadcast <- notif
+
 	}
 
 }
