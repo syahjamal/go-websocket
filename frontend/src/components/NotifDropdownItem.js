@@ -12,7 +12,7 @@ class NotifDropdownItem extends Component {
 
     render() {
         console.log(this.props.notifDropdownItem);
-        const messages = this.props.notifDropdownItem.map(msg => <Notifications message={msg.data} /> );
+        const messages = this.props.notifDropdownItem.map(msg => <Notifications message={msg.data.message} /> );
         // console.log(messages)
         return (
             <div className="notif_dropdown_item">
