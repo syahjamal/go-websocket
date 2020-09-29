@@ -8,6 +8,7 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/syahjamal/go-websocket/config"
 	"github.com/syahjamal/go-websocket/models"
+	"github.com/syahjamal/go-websocket/routes"
 )
 
 var clients = make(map[*websocket.Conn]bool)
@@ -19,8 +20,20 @@ var upgrader = websocket.Upgrader{
 }
 
 func main() {
+	config.InitDB()
+	defer config.DB.Close()
 
-	go handleMessages()
+	r := gin.Default()
+
+	r.GET("/getnotif", routes.GetMessage)
+
+	r.Run()
+	// log.Println("http server started on :8000")
+	// err := http.ListenAndServe(":8000", nil)
+	// if err != nil {
+	// 	log.Fatal("ListenAndServe: ", err)
+	// }
+	// go handleMessages()
 }
 
 func handleConnections(w http.ResponseWriter, r *http.Request, c *gin.Context) {

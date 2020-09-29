@@ -40,8 +40,6 @@ func GetMessage(c *gin.Context) {
 		"status": "berhasil mendapatkan data",
 		"data":   bc.Message,
 	})
-
-	return
 }
 
 //PostNotif function
