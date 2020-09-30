@@ -62,9 +62,14 @@ func handleConnections(c *gin.Context) {
 	for {
 		// var ctx *gin.Context
 		// routes.GetMessage(ctx)
+		createdAt := c.Param("created_at")
 
 		var notif models.Notification
-
+		config.DB.Where("created_at > ?", createdAt).Find(&notif)
+		c.JSON(200, gin.H{
+			"status": "berhasil mendapatkan data",
+			"data":   notif.Message,
+		})
 		err := ws.ReadJSON(&notif)
 		if err != nil {
 			log.Printf("error: %v", err)
