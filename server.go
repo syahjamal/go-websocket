@@ -66,11 +66,9 @@ func handleConnections(c *gin.Context) {
 
 		var notif models.Notification
 		config.DB.Where("created_at > ?", createdAt).Find(&notif)
-		c.JSON(200, gin.H{
-			"status": "berhasil mendapatkan data",
-			"data":   notif.Message,
+		err := ws.ReadJSON(gin.H{
+			"data": notif.Message,
 		})
-		err := ws.ReadJSON(&notif)
 		if err != nil {
 			log.Printf("error: %v", err)
 			delete(clients, ws)
