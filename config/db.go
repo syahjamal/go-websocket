@@ -13,7 +13,7 @@ var DB *gorm.DB
 func InitDB() {
 	var err error
 
-	DB, err = gorm.Open("mysql", "root:@/timesheet?charset=utf8&parseTime=True&loc=Local")
+	DB, err = gorm.Open("mysql", "root:celerates@/celerates_db?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
 		panic("failed to connect database")
 	}

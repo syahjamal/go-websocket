@@ -1,5 +1,5 @@
 // define websocket
-var socket = new WebSocket('ws://localhost:8000/ws')
+var socket = new WebSocket('ws://localhost:8080/ws')
 
 let connect = (cb) => {
     console.log("Connecting")
@@ -10,7 +10,7 @@ let connect = (cb) => {
 
     socket.onmessage = (msg) => {
         console.log("Message from WebSocket: ", msg);
-        cb(msg)
+        // cb(msg)
     }
 
     socket.onclose = (event) => {
