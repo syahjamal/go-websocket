@@ -43,7 +43,7 @@ func main() {
 	// if err != nil {
 	// 	log.Fatal("ListenAndServe: ", err)
 	// }
-	r.Run(":8000")
+	r.Run(":8080")
 
 }
 
@@ -63,28 +63,38 @@ func handleConnections(c *gin.Context) {
 		// var ctx *gin.Context
 		// routes.GetMessage(ctx)
 		createdAt := c.Param("created_at")
+		// log.Printf("createdAt: %v", createdAt)
 
 		var notif models.Notification
 		config.DB.Where("created_at > ?", createdAt).Find(&notif)
-		err := ws.ReadJSON(gin.H{
-			"data": notif.Message,
-		})
+		// log.Printf("notif: %v", notif.Username)
+
+		// ? check
+		err := ws.WriteJSON(notif.Message)
+
+		log.Printf("message: %v", err)
+
 		if err != nil {
-			log.Printf("error: %v", err)
+			// log.Printf("error: %v", err)
 			delete(clients, ws)
 			break
 		}
 
 		models.Broadcast <- notif
-
+		log.Printf("message: %v", models.Broadcast)
 	}
 
 }
 
 func handleMessages() {
 	message := <-models.Broadcast
+
+	log.Printf("message: %v", message)
+
 	for client := range clients {
-		err := client.WriteJSON(message)
+		log.Printf("client: %v", client)
+
+		err := client.ReadJSON(message)
 		if err != nil {
 			log.Printf("error: %v", err)
 			client.Close()

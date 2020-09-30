@@ -6,7 +6,7 @@ class NotifDropdownItem extends Component {
     //     super(props);
     //     this.state = {
     //         id: 1,
-    //         message: 'Hello there i am from Bekasi :)'
+    //         message: 'Hello there, I am from Bekasi :)'
     //     }
     // }  
 
@@ -18,6 +18,8 @@ class NotifDropdownItem extends Component {
             <div className="notif_dropdown_item">
                 <div className="avatar" />
                 <div className="content">
+                    {/* <p>Id: {this.state.id}</p>
+                    <p>Message: {this.state.message}</p> */}
                     {messages}
                 </div>
             </div>
