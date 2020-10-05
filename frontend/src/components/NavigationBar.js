@@ -6,7 +6,7 @@ export default function NavigationBar() {
     return (
         <div className="navbar">
             <div className="navbar_title">               
-                <h1>Celerates App</h1>                        
+                <a href="/" target="_blank"><h1>Celerates App</h1></a>                       
             </div>
             <div className="navbar_notification">
                 <NotifDropdown />

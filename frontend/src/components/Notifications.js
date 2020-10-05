@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
-import { sendMsg } from '../api';
 
 class Notifications extends Component {
     constructor(props) {
         super(props);
-        let temp = sendMsg(JSON.parse(this.props.notifications));
+        let temp = JSON.parse(this.props.notification);
         this.state = {
-            notifications: temp
+            notification: temp
         }
     }
 
     render() {
         return (
             <div className='Notifications'>
-                {this.state.notifications.message}
+                {this.state.notification.message}
             </div>
         );
     };
