@@ -36,6 +36,9 @@ func GetMessage(c *gin.Context) {
 
 	var bc models.Notification
 	config.DB.Where("created_at > ?", createdAt).Find(&bc.Message)
+	// err := ws.WriteJSON(bc)
+
+	// models.Broadcast <- bc
 }
 
 //PostNotif function

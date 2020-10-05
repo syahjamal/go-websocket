@@ -13,7 +13,8 @@ import (
 	"github.com/syahjamal/go-websocket/models"
 )
 
-var clients = make(map[*websocket.Conn]bool)
+//Clients Variable
+var Clients = make(map[*websocket.Conn]bool)
 
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
@@ -53,29 +54,27 @@ func handleConnections(c *gin.Context) {
 	defer ws.Close()
 
 	// Register our new client
-	clients[ws] = true
+	Clients[ws] = true
+
+	createdAt := c.Param("created_at")
+	// log.Printf("createdAt: %v", createdAt)
+
+	var notif models.Notification
+	config.DB.Where("created_at > ?", createdAt).Find(&notif)
+	defer config.DB.Close()
+	// log.Printf("notif: %v", notif.Username)
 
 	for {
-		createdAt := c.Param("created_at")
-		// log.Printf("createdAt: %v", createdAt)
-
-		var notif models.Notification
-		config.DB.Where("created_at > ?", createdAt).Find(&notif)
-		// log.Printf("notif: %v", notif.Username)
-
 		// ? check
 		err := ws.WriteJSON(notif.Message)
 
 		// log.Printf("message: %v", err)
-
 		if err != nil {
 			// log.Printf("error: %v", err)
-			delete(clients, ws)
+			delete(Clients, ws)
 			break
 		}
-
 		models.Broadcast <- notif
-		// log.Printf("message: %v", models.Broadcast)
 	}
 
 }
@@ -83,15 +82,14 @@ func handleConnections(c *gin.Context) {
 func handleMessages() {
 	message := <-models.Broadcast
 
-	// log.Printf("message: %v", message.Message)
-	for client := range clients {
-		log.Printf("client: %v", client)
+	for client := range Clients {
+		// log.Printf("client: %v", client)
 
 		err := client.ReadJSON(message.Message)
 		if err != nil {
 			log.Printf("error: %v", err)
 			client.Close()
-			delete(clients, client)
+			delete(Clients, client)
 		}
 	}
 
