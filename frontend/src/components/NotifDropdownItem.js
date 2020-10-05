@@ -1,26 +1,36 @@
 import React, { Component } from 'react';
-import Notifications from './Notifications';
+import { connect } from '../api';
+// import Notifications from './Notifications';
 
 class NotifDropdownItem extends Component {
-    // constructor(props) {
-    //     super(props);
-    //     this.state = {
-    //         id: 1,
-    //         message: 'Hello there, I am from Bekasi :)'
-    //     }
-    // }  
+    constructor(props) {
+        super(props);
+        // let temp = JSON.parse(this.props.notification);
+        this.state = {         
+            msgNotif: []
+        }
+    }
+    
+    componentDidMount() {
+        connect((msg) => {
+            console.log("New Message")
+            this.setState(prevState => ({
+                msgNotif: [...prevState.msgNotif, msg]
+            }))
+            console.log(JSON.parse(this.state.msgNotif[0].data));
+        })
+    }
 
     render() {
-        console.log(this.props.notifDropdownItem);
-        const messages = this.props.notifDropdownItem.map(msg => <Notifications message={msg.data.message} /> );
-        // console.log(messages)
+        const message = this.state.msgNotif.map(msg => msg.data);
+        // console.log(message);
+
         return (
             <div className="notif_dropdown_item">
                 <div className="avatar" />
                 <div className="content">
-                    {/* <p>Id: {this.state.id}</p>
-                    <p>Message: {this.state.message}</p> */}
-                    {messages}
+                    {/* <p>Id: </p> */}
+                    <p>Message: {message}</p>
                 </div>
             </div>
         );

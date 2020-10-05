@@ -2,37 +2,37 @@ import React, { Component } from 'react';
 import '../App.css';
 import Button from '@material-ui/core/Button';
 import NotifDropdownItem from './NotifDropdownItem';
-import { connect, sendMsg } from '../api';
+// import { connect, sendMsg } from '../api';
 
 // Class component
 class NotifDropdown extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            endpoint:"ws://localhost:8000/ws",
-            notifDropdownItem: []
-        }
-    }
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //         notifDropdownItem: []
+    //     }
+    // }
 
     handleClick = () => {
         document.querySelector("#myNotifDropdown").classList.toggle("show");
     }
 
-    componentDidMount() {
-        connect((msg) => {
-            console.log("New Message")
-            this.setState(prevState => ({
-                notifDropdownItem: [...prevState.notifDropdownItem, msg]
-            }))
-        })
-    }
+    // componentDidMount() {
+    //     connect((msg) => {
+    //         console.log("New Message")
+    //         this.setState(prevState => ({
+    //             notifDropdownItem: [...prevState.notifDropdownItem, msg]
+    //         }))
+    //         console.log(this.state);
+    //     })
+    // }
 
-    send(event) {
-        if (event.keyCode === 13) {
-            sendMsg(event.target.value);
-            event.target.value = "";
-        }
-    }
+    // send(event) {
+    //     if (event.keyCode === 13) {
+    //         sendMsg(event.target.value);
+    //         event.target.value = "";
+    //     }
+    // }
 
     render() {
         return (
@@ -50,7 +50,7 @@ class NotifDropdown extends Component {
                     </div>
                     {/* Body */}
                     <div className="notif_dropdown_body">
-                        <NotifDropdownItem notifDropdownItem={this.state.notifDropdownItem} />
+                        <NotifDropdownItem />                     
                     </div>
                     {/* Footer */}
                     <div className="notif_dropdown_footer">
