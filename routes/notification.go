@@ -35,11 +35,7 @@ func GetMessage(c *gin.Context) {
 	createdAt := c.Param("created_at")
 
 	var bc models.Notification
-	config.DB.Where("created_at > ?", createdAt).Find(&bc)
-	c.JSON(200, gin.H{
-		"status": "berhasil mendapatkan data",
-		"data":   bc.Message,
-	})
+	config.DB.Where("created_at > ?", createdAt).Find(&bc.Message)
 }
 
 //PostNotif function

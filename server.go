@@ -38,11 +38,6 @@ func main() {
 
 	go handleMessages()
 
-	// log.Println("http server started on :8080")
-	// err := http.ListenAndServe(":8080", nil)
-	// if err != nil {
-	// 	log.Fatal("ListenAndServe: ", err)
-	// }
 	r.Run(":8080")
 
 }
@@ -59,9 +54,8 @@ func handleConnections(c *gin.Context) {
 
 	// Register our new client
 	clients[ws] = true
+
 	for {
-		// var ctx *gin.Context
-		// routes.GetMessage(ctx)
 		createdAt := c.Param("created_at")
 		// log.Printf("createdAt: %v", createdAt)
 
@@ -72,7 +66,7 @@ func handleConnections(c *gin.Context) {
 		// ? check
 		err := ws.WriteJSON(notif.Message)
 
-		log.Printf("message: %v", err)
+		// log.Printf("message: %v", err)
 
 		if err != nil {
 			// log.Printf("error: %v", err)
@@ -81,7 +75,7 @@ func handleConnections(c *gin.Context) {
 		}
 
 		models.Broadcast <- notif
-		log.Printf("message: %v", models.Broadcast)
+		// log.Printf("message: %v", models.Broadcast)
 	}
 
 }
@@ -89,16 +83,16 @@ func handleConnections(c *gin.Context) {
 func handleMessages() {
 	message := <-models.Broadcast
 
-	log.Printf("message: %v", message)
-
+	// log.Printf("message: %v", message.Message)
 	for client := range clients {
 		log.Printf("client: %v", client)
 
-		err := client.ReadJSON(message)
+		err := client.ReadJSON(message.Message)
 		if err != nil {
 			log.Printf("error: %v", err)
 			client.Close()
 			delete(clients, client)
 		}
 	}
+
 }
