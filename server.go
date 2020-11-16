@@ -36,11 +36,18 @@ func main() {
 	// http.HandleFunc("/ws", handleConnections)
 	r.GET("/ws", handleConnections)
 	// r.GET("/getnotif", routes.GetMessage)
+	// go GetMsg()
 
 	go handleMessages()
 
 	r.Run(":8080")
 
+}
+
+//GetMsg function
+func GetMsg() {
+	r := gin.Default()
+	r.Use(routes.GetMessage)
 }
 
 func handleConnections(c *gin.Context) {
@@ -63,7 +70,6 @@ func handleConnections(c *gin.Context) {
 	config.DB.Where("created_at > ?", createdAt).Find(&notif)
 	defer config.DB.Close()
 	// log.Printf("notif: %v", notif.Username)
-
 	for {
 		// ? check
 		err := ws.WriteJSON(notif.Message)
@@ -74,6 +80,7 @@ func handleConnections(c *gin.Context) {
 			delete(Clients, ws)
 			break
 		}
+
 		models.Broadcast <- notif
 	}
 

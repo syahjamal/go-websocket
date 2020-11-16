@@ -17,6 +17,10 @@ class NotifDropdown extends Component {
         document.querySelector("#myNotifDropdown").classList.toggle("show");
     }
 
+    notif = (props) =>{
+        const notifItem = props.notifItem;
+        return(notifItem.length) 
+    }
     // componentDidMount() {
     //     connect((msg) => {
     //         console.log("New Message")
